@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca — Gestión de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #2d1b69 0%, #c9706a 100%); min-height: 100vh; }
+        .navbar { background: rgba(0,0,0,0.4) !important; backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/admin/dashboard.html"> BIBLIOTECA — Admin</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/libros.html">Libros</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/usuarios.html">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/categorias.html">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/prestamos.html">Préstamos</a></li>
+                </ul>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card shadow rounded-3 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Gestión de Usuarios</h4>
+                <button class="btn btn-dark" onclick="abrirModalUsuario()">+ Agregar usuario</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Registro</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaUsuarios"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Usuario -->
+    <div class="modal fade" id="modalUsuario" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalUsuarioTitulo">Agregar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUsuario">
+                        <input type="hidden" id="usuarioId">
+                        <div class="mb-2">
+                            <label class="form-label">Nombre completo</label>
+                            <input type="text" id="inputUsuarioNombre" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Correo</label>
+                            <input type="email" id="inputUsuarioCorreo" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Contraseña <small class="text-muted">(dejar vacío para no cambiar)</small></label>
+                            <input type="password" id="inputUsuarioContrasena" class="form-control" minlength="6">
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Tipo de usuario</label>
+                            <select id="selectTipoUsuario" class="form-select">
+                                <option value="usuario">Usuario</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-dark" onclick="guardarUsuario()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/controllers/env.js"></script>
+    <script src="/controllers/auth_controller.js"></script>
+    <script src="/controllers/admin_controller.js"></script>
+    <script>validarAdmin(); cargarUsuariosAdmin();</script>
+</body>
+</html>

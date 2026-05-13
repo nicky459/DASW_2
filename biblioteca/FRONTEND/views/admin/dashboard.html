@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca — Panel Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #2d1b69 0%, #c9706a 100%); min-height: 100vh; }
+        .navbar { background: rgba(0,0,0,0.4) !important; backdrop-filter: blur(8px); }
+        .btn-panel { height: 90px; font-size: 1.1rem; font-weight: 600; border-radius: 12px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/admin/dashboard.html"> BIBLIOTECA — Admin</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/admin/dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/libros.html">Libros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/usuarios.html">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/categorias.html">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/prestamos.html">Préstamos</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-white" id="userNameWidget"></span>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card shadow p-4 rounded-3 text-center" style="max-width:500px;margin:auto">
+            <h4 class="fw-bold mb-4">Panel de Administración</h4>
+            <div class="d-grid gap-3">
+                <a href="/admin/libros.html" class="btn btn-dark btn-panel"> Gestionar Libros</a>
+                <a href="/admin/usuarios.html" class="btn btn-dark btn-panel"> Gestionar Usuarios</a>
+                <a href="/admin/categorias.html" class="btn btn-dark btn-panel"> Gestionar Categorías</a>
+                <a href="/admin/prestamos.html" class="btn btn-dark btn-panel"> Ver Préstamos</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/controllers/env.js"></script>
+    <script src="/controllers/auth_controller.js"></script>
+    <script>validarAdmin();</script>
+</body>
+</html>

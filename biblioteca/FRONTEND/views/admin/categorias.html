@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca — Gestión de Categorías</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #2d1b69 0%, #c9706a 100%); min-height: 100vh; }
+        .navbar { background: rgba(0,0,0,0.4) !important; backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/admin/dashboard.html"> BIBLIOTECA — Admin</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/libros.html">Libros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/usuarios.html">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/categorias.html">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/prestamos.html">Préstamos</a></li>
+                </ul>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card shadow rounded-3 p-4" style="max-width:700px;margin:auto">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Gestión de Categorías</h4>
+                <button class="btn btn-dark" onclick="abrirModalCategoria()">+ Agregar categoría</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaCategorias"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Categoría -->
+    <div class="modal fade" id="modalCategoria" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalCategoriaTitulo">Nueva Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCategoria">
+                        <input type="hidden" id="categoriaId">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la categoría</label>
+                            <input type="text" id="inputNombreCategoria" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea id="inputDescripcionCategoria" class="form-control" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-dark" onclick="guardarCategoria()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/controllers/env.js"></script>
+    <script src="/controllers/auth_controller.js"></script>
+    <script src="/controllers/admin_controller.js"></script>
+    <script>validarAdmin(); cargarCategoriasAdmin();</script>
+</body>
+</html>
