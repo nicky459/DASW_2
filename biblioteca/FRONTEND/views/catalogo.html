@@ -47,6 +47,23 @@
         .logo-img {
             mix-blend-mode: screen;
         }
+
+        .carrusel-recomendados {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.25) transparent;
+        }
+        .carrusel-recomendados::-webkit-scrollbar { height: 4px; }
+        .carrusel-recomendados::-webkit-scrollbar-track { background: transparent; }
+        .carrusel-recomendados::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 2px; }
+
+        .card-rec {
+            width: 155px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 
