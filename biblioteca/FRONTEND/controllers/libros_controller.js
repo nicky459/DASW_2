@@ -13,12 +13,18 @@ async function cargarCatalogo() {
 
     renderLibros(libros, "gridLibros");
 
-    // Recomendados solo si hay token Y no hay filtro de categoría activo
-    if (getToken() && !categoria) {
+    // Recomendados solo en "Todos los libros" (sin filtro de categoría ni búsqueda)
+    let sidebar = document.querySelector(".sidebar-recomendados");
+    let layout  = document.querySelector(".page-layout");
+    if (getToken() && !categoria && !busqueda) {
+        if (sidebar) sidebar.style.display = "";
+        if (layout)  layout.classList.remove("sin-sidebar");
         cargarRecomendados();
     } else {
         let sec = document.getElementById("seccionRecomendados");
-        if (sec) sec.style.display = "none";
+        if (sec)     sec.style.display = "none";
+        if (sidebar) sidebar.style.display = "none";
+        if (layout)  layout.classList.add("sin-sidebar");
     }
 }
 
@@ -56,10 +62,10 @@ async function cargarRecomendados() {
             col.innerHTML = `
                 <div class="card h-100 shadow-sm libro-card" onclick="verDetalle('${libro._id}')" style="cursor:pointer">
                     <img src="${libro.imagen_portada || 'https://via.placeholder.com/150x200?text=Sin+imagen'}"
-                         class="card-img-top" style="height:160px;object-fit:cover" alt="${libro.titulo}">
+                         class="card-img-top" style="height:150px;object-fit:cover" alt="${libro.titulo}">
                     <div class="card-body p-2">
-                        <h6 class="card-title mb-1" style="font-size:.82rem">${libro.titulo}</h6>
-                        <p class="text-muted mb-1" style="font-size:.72rem">${libro.autor}</p>
+                        <h6 class="card-title mb-1" style="font-size:.85rem">${libro.titulo}</h6>
+                        <p class="text-muted mb-1" style="font-size:.75rem">${libro.autor}</p>
                         <span class="badge ${disponible ? 'bg-success' : 'bg-secondary'}">${disponible ? 'Disponible' : 'No disponible'}</span>
                     </div>
                     <div class="card-footer p-2">
