@@ -38,9 +38,9 @@
 
         .logo-img {
             border-radius: 5px;
-           
+
             filter: brightness(1.1);
-            
+
             object-fit: cover;
         }
 
@@ -77,12 +77,10 @@
 
     <div class="main-content">
         <!-- Buscador y filtros -->
-        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-            <div class="input-group" style="max-width:300px">
-                <input type="text" id="inputBusqueda" class="form-control" placeholder="Buscar libro...">
-                <button class="btn btn-light" onclick="buscarLibros()"></button>
-            </div>
-            <div id="filtroCategorias" class="d-flex flex-wrap gap-1"></div>
+        <div class="input-group" style="max-width:300px">
+            <input type="text" id="inputBusqueda" class="form-control" placeholder="Buscar libro..."
+                onkeydown="if(event.key==='Enter') buscarLibros()">
+            <button class="btn btn-light" onclick="buscarLibros()">Buscar</button>
         </div>
 
         <!-- Sección recomendados -->
