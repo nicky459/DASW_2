@@ -32,20 +32,72 @@
             transform: translateY(-4px);
         }
 
-        .main-content {
-            padding: 24px;
-        }
-
         .logo-img {
             border-radius: 5px;
 
             filter: brightness(1.1);
 
             object-fit: cover;
+            mix-blend-mode: screen;
         }
 
-        .logo-img {
-            mix-blend-mode: screen;
+        /* Layout principal: catálogo + sidebar */
+        .page-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 0;
+            align-items: start;
+            min-height: calc(100vh - 56px);
+        }
+
+        .main-content {
+            padding: 24px;
+            min-width: 0;
+        }
+
+        .page-layout.sin-sidebar {
+            grid-template-columns: 1fr;
+        }
+
+        /* Sidebar recomendados */
+        .sidebar-recomendados {
+            padding: 24px 16px;
+            background: rgba(0, 0, 0, 0.25);
+            min-height: calc(100vh - 56px);
+            position: sticky;
+            top: 56px;
+            max-height: calc(100vh - 56px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
+
+        .sidebar-recomendados::-webkit-scrollbar { width: 4px; }
+        .sidebar-recomendados::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-recomendados::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+        /* Tarjetas dentro del sidebar: apiladas verticalmente */
+        .carrusel-recomendados {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card-rec {
+            width: 100%;
+        }
+
+        /* En mobile, el sidebar se pone arriba */
+        @media (max-width: 768px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-recomendados {
+                position: static;
+                min-height: unset;
+                max-height: unset;
+                order: -1;
+            }
         }
     </style>
 </head>
@@ -83,15 +135,14 @@
             <button class="btn btn-light" onclick="buscarLibros()">Buscar</button>
         </div>
 
-        <!-- Sección recomendados -->
-        <div id="seccionRecomendados" style="display:none" class="mb-4">
-            <h5 class="text-white fw-bold">Recomendados para ti</h5>
-            <div id="gridRecomendados"></div>
-        </div>
+        <!-- Columna derecha: sidebar recomendados -->
+        <aside class="sidebar-recomendados">
+            <div id="seccionRecomendados" style="display:none">
+                <h5 class="text-white fw-bold mb-3">Recomendados para ti</h5>
+                <div id="gridRecomendados"></div>
+            </div>
+        </aside>
 
-        <!-- Catálogo completo -->
-        <h5 class="text-white fw-bold mb-3">Todos los libros</h5>
-        <div id="gridLibros" class="row"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

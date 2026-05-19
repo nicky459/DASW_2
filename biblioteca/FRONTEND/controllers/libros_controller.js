@@ -13,9 +13,18 @@ async function cargarCatalogo() {
 
     renderLibros(libros, "gridLibros");
 
-    // Recomendados (solo si hay token)
-    if (getToken()) {
+    // Recomendados solo en "Todos los libros" (sin filtro de categoría ni búsqueda)
+    let sidebar = document.querySelector(".sidebar-recomendados");
+    let layout  = document.querySelector(".page-layout");
+    if (getToken() && !categoria && !busqueda) {
+        if (sidebar) sidebar.style.display = "";
+        if (layout)  layout.classList.remove("sin-sidebar");
         cargarRecomendados();
+    } else {
+        let sec = document.getElementById("seccionRecomendados");
+        if (sec)     sec.style.display = "none";
+        if (sidebar) sidebar.style.display = "none";
+        if (layout)  layout.classList.add("sin-sidebar");
     }
 }
 
@@ -45,25 +54,24 @@ async function cargarRecomendados() {
         container.appendChild(titulo);
 
         let fila = document.createElement("div");
-        fila.className = "row";
+        fila.className = "carrusel-recomendados";
         for (let libro of seccion.libros) {
             let disponible = libro.cantidad_disponible > 0;
             let col = document.createElement("div");
-            col.className = "col-6 col-md-3 mb-3";
+            col.className = "card-rec";
             col.innerHTML = `
                 <div class="card h-100 shadow-sm libro-card" onclick="verDetalle('${libro._id}')" style="cursor:pointer">
                     <img src="${libro.imagen_portada || 'https://via.placeholder.com/150x200?text=Sin+imagen'}"
-                         class="card-img-top" style="height:160px;object-fit:cover" alt="${libro.titulo}">
+                         class="card-img-top" style="height:150px;object-fit:cover" alt="${libro.titulo}">
                     <div class="card-body p-2">
-                        <h6 class="card-title mb-1" style="font-size:.82rem">${libro.titulo}</h6>
-                        <p class="text-muted mb-1" style="font-size:.72rem">${libro.autor}</p>
+                        <h6 class="card-title mb-1" style="font-size:.85rem">${libro.titulo}</h6>
+                        <p class="text-muted mb-1" style="font-size:.75rem">${libro.autor}</p>
                         <span class="badge ${disponible ? 'bg-success' : 'bg-secondary'}">${disponible ? 'Disponible' : 'No disponible'}</span>
                     </div>
                     <div class="card-footer p-2">
-                        <button class="btn btn-sm btn-dark w-100"
-                            onclick="event.stopPropagation(); solicitarPrestamo('${libro._id}')"
-                            ${disponible ? '' : 'disabled'}>
-                            ${disponible ? 'Reservar' : 'No disponible'}
+                        <button class="btn btn-sm w-100 ${disponible ? 'btn-dark' : 'btn-secondary'}"
+                            onclick="event.stopPropagation(); ${disponible ? `solicitarPrestamo('${libro._id}')` : `sinExistencia()`}">
+                            ${disponible ? 'Reservar' : 'Sin existencias'}
                         </button>
                     </div>
                 </div>`;
@@ -122,10 +130,9 @@ function renderLibros(libros, containerId) {
                     <span class="badge ${disponible ? 'bg-success' : 'bg-secondary'}">${disponible ? 'Disponible' : 'No disponible'}</span>
                 </div>
                 <div class="card-footer p-2">
-                    <button class="btn btn-sm btn-dark w-100"
-                        onclick="event.stopPropagation(); solicitarPrestamo('${libro._id}')"
-                        ${disponible ? '' : 'disabled'}>
-                        ${disponible ? 'Reservar' : 'No disponible'}
+                    <button class="btn btn-sm w-100 ${disponible ? 'btn-dark' : 'btn-secondary'}"
+                        onclick="event.stopPropagation(); ${disponible ? `solicitarPrestamo('${libro._id}')` : `sinExistencia()`}">
+                        ${disponible ? 'Reservar' : 'Sin existencias'}
                     </button>
                 </div>
             </div>`;
@@ -156,11 +163,16 @@ async function cargarDetalle() {
         badgeDisp.textContent = "Disponible";
         badgeDisp.className = "badge bg-success fs-6 mb-3";
         btnPrestamo.disabled = false;
+        btnPrestamo.className = "btn btn-dark btn-lg";
+        btnPrestamo.textContent = "Solicitar préstamo";
         btnPrestamo.onclick = () => solicitarPrestamo(libro._id);
     } else {
-        badgeDisp.textContent = "No disponible";
-        badgeDisp.className = "badge bg-secondary fs-6 mb-3";
-        btnPrestamo.disabled = true;
+        badgeDisp.textContent = "Sin existencias";
+        badgeDisp.className = "badge bg-danger fs-6 mb-3";
+        btnPrestamo.disabled = false;
+        btnPrestamo.className = "btn btn-secondary btn-lg";
+        btnPrestamo.textContent = "Sin existencias";
+        btnPrestamo.onclick = () => sinExistencia();
     }
 }
 
@@ -185,6 +197,10 @@ async function solicitarPrestamo(id_libro) {
     alert("¡Préstamo registrado! Fecha de devolución: " + new Date(json.prestamo.fecha_devolucion).toLocaleDateString());
     if (typeof cargarCatalogo === "function") cargarCatalogo();
     if (typeof cargarDetalle === "function") cargarDetalle();
+}
+
+function sinExistencia() {
+    alert("Lo sentimos, este libro no tiene copias disponibles en este momento.\nPuede consultarlo más tarde o explorar otros títulos del catálogo.");
 }
 
 function verDetalle(id) {
